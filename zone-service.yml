@@ -4,13 +4,15 @@ server:
     context-path: /zone-service
 
 spring:
+  application:
+    name: zone-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: mysql
     url: jdbc:mysql://localhost:3306/agms_zone_db?createDatabaseIfNotExist=true
     hikari:
-      maximum-pool-size: 15
+      maximum-pool-size: 10
 
   jpa:
     generate-ddl: true
@@ -23,3 +25,4 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+  
