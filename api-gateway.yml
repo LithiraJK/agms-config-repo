@@ -1,47 +1,56 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        # Auth Service
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth-service/**
+          filters:
+            # /auth-service/auth/token -> /auth-service/auth/token (Service context path එකට ගැලපේ)
+            - RewritePath=/auth-service/(?<remaining>.*), /auth-service/${remaining}
 
-    cloud:
-      gateway:
-        server:
-          webflux:
-            routes:
-              - id: auth-service
-                uri: lb://auth-service
-                predicates:
-                  - Path=/auth-service/**
+        # Zone Service
+        - id: zone-service
+          uri: lb://zone-service
+          predicates:
+            - Path=/zone-service/**
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/zone-service/(?<remaining>.*), /zone-service/${remaining}
 
-              - id: zone-service
-                uri: lb://zone-service
-                predicates:
-                  - Path=/zone-service/**
-                filters:
-                  - AuthenticationFilter
+        # Automation Service
+        - id: automation-service
+          uri: lb://automation-service
+          predicates:
+            - Path=/automation-service/**
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/automation-service/(?<remaining>.*), /automation-service/${remaining}
 
-              - id: automation-service
-                uri: lb://automation-service
-                predicates:
-                  - Path=/automation-service/**
-                filters:
-                  - AuthenticationFilter
+        # Crop Service
+        - id: crop-service
+          uri: lb://crop-service
+          predicates:
+            - Path=/crop-service/**
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/crop-service/(?<remaining>.*), /crop-service/${remaining}
 
-              - id: crop-service
-                uri: lb://crop-service
-                predicates:
-                  - Path=/crop-service/**
-                filters:
-                  - AuthenticationFilter
-
-              - id: sensor-telemetry-service
-                uri: lb://sensor-telemetry-service
-                predicates:
-                  - Path=/sensor-telemetry-service/**
-                filters:
-                  - AuthenticationFilter
-
-server:
-  port: 8080
+        # Sensor Telemetry Service
+        - id: sensor-telemetry-service
+          uri: lb://sensor-telemetry-service
+          predicates:
+            - Path=/sensor-telemetry-service/**
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/sensor-telemetry-service/(?<remaining>.*), /sensor-telemetry-service/${remaining}
 
 eureka:
   client:
