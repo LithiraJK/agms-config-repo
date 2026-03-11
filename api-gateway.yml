@@ -5,28 +5,40 @@ spring:
     cloud:
       gateway:
         server:
-            webflux:
-                routes:
-                  - id: zone-service
-                    uri: lb://zone-service
-                    predicates:
-                      - Path=/zone-service/**
+          webflux:
+            routes:
+              - id: auth-service
+                uri: lb://auth-service
+                predicates:
+                  - Path=/auth-service/**
 
-                  - id: automation-service
-                    uri: lb://automation-service
-                    predicates:
-                      - Path=/automation-service/**
+              - id: zone-service
+                uri: lb://zone-service
+                predicates:
+                  - Path=/zone-service/**
+                filters:
+                  - AuthenticationFilter
 
-                  - id: crop-service
-                    uri: lb://crop-service
-                    predicates:
-                      - Path=/crop-service/**
+              - id: automation-service
+                uri: lb://automation-service
+                predicates:
+                  - Path=/automation-service/**
+                filters:
+                  - AuthenticationFilter
 
-                  - id: sensor-telemetry-service
-                    uri: lb://sensor-telemetry-service
-                    predicates:
-                      - Path=/sensor-telemetry-service/**
+              - id: crop-service
+                uri: lb://crop-service
+                predicates:
+                  - Path=/crop-service/**
+                filters:
+                  - AuthenticationFilter
 
+              - id: sensor-telemetry-service
+                uri: lb://sensor-telemetry-service
+                predicates:
+                  - Path=/sensor-telemetry-service/**
+                filters:
+                  - AuthenticationFilter
 
 server:
   port: 8080
@@ -34,4 +46,4 @@ server:
 eureka:
   client:
     service-url:
-        defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
