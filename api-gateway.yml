@@ -12,9 +12,6 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/auth-service/**
-          filters:
-            # /auth-service/auth/token -> /auth-service/auth/token (Service context path එකට ගැලපේ)
-            - RewritePath=/auth-service/(?<remaining>.*), /auth-service/${remaining}
 
         # Zone Service
         - id: zone-service
@@ -23,7 +20,6 @@ spring:
             - Path=/zone-service/**
           filters:
             - AuthenticationFilter
-            - RewritePath=/zone-service/(?<remaining>.*), /zone-service/${remaining}
 
         # Automation Service
         - id: automation-service
@@ -32,7 +28,6 @@ spring:
             - Path=/automation-service/**
           filters:
             - AuthenticationFilter
-            - RewritePath=/automation-service/(?<remaining>.*), /automation-service/${remaining}
 
         # Crop Service
         - id: crop-service
@@ -41,7 +36,6 @@ spring:
             - Path=/crop-service/**
           filters:
             - AuthenticationFilter
-            - RewritePath=/crop-service/(?<remaining>.*), /crop-service/${remaining}
 
         # Sensor Telemetry Service
         - id: sensor-telemetry-service
@@ -50,7 +44,6 @@ spring:
             - Path=/sensor-telemetry-service/**
           filters:
             - AuthenticationFilter
-            - RewritePath=/sensor-telemetry-service/(?<remaining>.*), /sensor-telemetry-service/${remaining}
 
 eureka:
   client:
