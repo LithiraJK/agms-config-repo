@@ -6,44 +6,45 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      routes:
-        # Auth Service
-        - id: auth-service
-          uri: lb://auth-service
-          predicates:
-            - Path=/auth-service/**
+      webflux:
+        routes:
+          # Auth Service
+          - id: auth-service
+            uri: lb://auth-service
+            predicates:
+              - Path=/auth-service/**
 
-        # Zone Service
-        - id: zone-service
-          uri: lb://zone-service
-          predicates:
-            - Path=/zone-service/**
-          filters:
-            - AuthenticationFilter
+          # Zone Service
+          - id: zone-service
+            uri: lb://zone-service
+            predicates:
+              - Path=/zone-service/**
+            filters:
+              - AuthenticationFilter
 
-        # Automation Service
-        - id: automation-service
-          uri: lb://automation-service
-          predicates:
-            - Path=/automation-service/**
-          filters:
-            - AuthenticationFilter
+          # Automation Service
+          - id: automation-service
+            uri: lb://automation-service
+            predicates:
+              - Path=/automation-service/**
+            filters:
+              - AuthenticationFilter
 
-        # Crop Service
-        - id: crop-service
-          uri: lb://crop-service
-          predicates:
-            - Path=/crop-service/**
-          filters:
-            - AuthenticationFilter
+          # Crop Service
+          - id: crop-service
+            uri: lb://crop-service
+            predicates:
+              - Path=/crop-service/**
+            filters:
+              - AuthenticationFilter
 
-        # Sensor Telemetry Service
-        - id: sensor-telemetry-service
-          uri: lb://sensor-telemetry-service
-          predicates:
-            - Path=/sensor-telemetry-service/**
-          filters:
-            - AuthenticationFilter
+          # Sensor Telemetry Service
+          - id: sensor-telemetry-service
+            uri: lb://sensor-telemetry-service
+            predicates:
+              - Path=/sensor-telemetry-service/**
+            filters:
+              - AuthenticationFilter
 
 eureka:
   client:
