@@ -6,61 +6,61 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      routes:
-        # Auth Service Routes
-        - id: auth-service
-          uri: lb://auth-service
-          predicates:
-            - Path=/auth-service/**
+      server:
+        webflux:
+          routes:
+            - id: auth-service
+              uri: lb://auth-service
+              predicates:
+                - Path=/auth-service/**
+              filters:
+                - RewritePath=/auth-service/(?<remaining>.*), /${remaining}
 
-        # Zone Service Routes
-        - id: zone-service
-          uri: lb://zone-service
-          predicates:
-            - Path=/zone-service/**
-          filters:
-            - AuthenticationFilter
+            - id: zone-service
+              uri: lb://zone-service
+              predicates:
+                - Path=/zone-service/**
+              filters:
+                - AuthenticationFilter
+                - RewritePath=/zone-service/(?<remaining>.*), /${remaining}
 
-        # Automation Service Routes
-        - id: automation-service
-          uri: lb://automation-service
-          predicates:
-            - Path=/automation-service/**
-          filters:
-            - AuthenticationFilter
+            - id: automation-service
+              uri: lb://automation-service
+              predicates:
+                - Path=/automation-service/**
+              filters:
+                - AuthenticationFilter
+                - RewritePath=/automation-service/(?<remaining>.*), /${remaining}
 
-        # Crop Service Routes
-        - id: crop-service
-          uri: lb://crop-service
-          predicates:
-            - Path=/crop-service/**
-          filters:
-            - AuthenticationFilter
+            - id: crop-service
+              uri: lb://crop-service
+              predicates:
+                - Path=/crop-service/**
+              filters:
+                - AuthenticationFilter
+                - RewritePath=/crop-service/(?<remaining>.*), /${remaining}
 
-        # Sensor Telemetry Service Routes
-        - id: sensor-telemetry-service
-          uri: lb://sensor-telemetry-service
-          predicates:
-            - Path=/sensor-telemetry-service/**
-          filters:
-            - AuthenticationFilter
+            - id: sensor-telemetry-service
+              uri: lb://sensor-telemetry-service
+              predicates:
+                - Path=/sensor-telemetry-service/**
+              filters:
+                - AuthenticationFilter
+                - RewritePath=/sensor-telemetry-service/(?<remaining>.*), /${remaining}
 
-      # Global CORS configuration
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins:
-              - "http://localhost:3000"
-              - "http://localhost:8080"
-              - "*"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            allowedHeaders: "*"
-            allowCredentials: true
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowed-origins:
+                  - "http://localhost:3000"
+                allowed-methods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                allowed-headers: "*"
+                allow-credentials: true
 
 eureka:
   client:
@@ -68,11 +68,8 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.application.name}:${server.port}
 
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
     org.springframework.web: DEBUG
-
-
