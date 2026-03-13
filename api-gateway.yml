@@ -13,8 +13,6 @@ spring:
               uri: lb://auth-service
               predicates:
                 - Path=/auth-service/**
-              filters:
-                - RewritePath=/auth-service/(?<remaining>.*), /${remaining}
 
             - id: zone-service
               uri: lb://zone-service
@@ -22,7 +20,6 @@ spring:
                 - Path=/zone-service/**
               filters:
                 - AuthenticationFilter
-                - RewritePath=/zone-service/(?<remaining>.*), /${remaining}
 
             - id: automation-service
               uri: lb://automation-service
@@ -30,7 +27,6 @@ spring:
                 - Path=/automation-service/**
               filters:
                 - AuthenticationFilter
-                - RewritePath=/automation-service/(?<remaining>.*), /${remaining}
 
             - id: crop-service
               uri: lb://crop-service
@@ -38,7 +34,6 @@ spring:
                 - Path=/crop-service/**
               filters:
                 - AuthenticationFilter
-                - RewritePath=/crop-service/(?<remaining>.*), /${remaining}
 
             - id: sensor-telemetry-service
               uri: lb://sensor-telemetry-service
@@ -46,7 +41,6 @@ spring:
                 - Path=/sensor-telemetry-service/**
               filters:
                 - AuthenticationFilter
-                - RewritePath=/sensor-telemetry-service/(?<remaining>.*), /${remaining}
 
           globalcors:
             cors-configurations:
